@@ -67,8 +67,8 @@ print("Tables:", tables)
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
     llm,
-    db=order_db1,
-    agent_type="openai-tools",
+    db=order_db,
+    agent_type="zero-shot-react-description",
     verbose=False
 )
 
