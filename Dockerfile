@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application files
 COPY app.py .
-COPY config.json .
+#COPY config.json .
 COPY customer_orders.db .
 
 # Expose the port Streamlit runs on
