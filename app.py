@@ -20,7 +20,7 @@ try:
 
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
     OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
-    openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
+    #openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
 
 except Exception as e:
     st.error(f"Error loading OpenAI credentials: {e}")
