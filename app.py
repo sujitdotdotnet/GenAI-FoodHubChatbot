@@ -4,6 +4,10 @@ import sqlite3
 import os
 import pandas as pd
 from openai import OpenAI
+###For DB Load
+from pathlib import Path
+from langchain_community.utilities.sql_database import SQLDatabas
+
 
 from langchain.agents import Tool, initialize_agent
 from langchain.chat_models import ChatOpenAI
@@ -47,10 +51,10 @@ if not llm:
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
-if not os.path.exists(DB_PATH):
-    st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
-    st.stop()
-order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+# if not os.path.exists(DB_PATH):
+#     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
+#     st.stop()
+# order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
 
 
 # db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
@@ -59,9 +63,44 @@ order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
 # db_uri = f'sqlite:////{os.path.abspath(db_path)}'
 # order_db = SQLDatabase.from_uri(db_uri)
 
-tables = order_db.get_table_names()
+
+# 1) Resolve to an absolute, canonical path inside the app directory
+app_dir = Path(__file__).parent if "__file__" in globals() else Path.cwd()
+db_file = (app_dir / DB_PATH).resolve()
+
+# 2) Hard fail early if the file is missing
+if not db_file.exists():
+    st.error(f"Database file not found at: {db_file}")
+    st.stop()
+
+# 3) Sanity-check with sqlite3 to confirm the file is a valid SQLite DB and list tables
+native_tables =None
+try:
+    with sqlite3.connect(db_file) as conn:
+        rows = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+        ).fetchall()
+        native_tables = [r[0] for r in rows]
+except Exception as e:
+    st.error(f"SQLite open failed: {e}")
+    st.stop()
+
+st.write(f"SQLite native tables: {native_tables}")
+
+# 4) Use a correct SQLAlchemy URI for a local file (relative/absolute both fine)
+#    'sqlite:///' + absolute path      (3 slashes + absolute path)
+#    Prefer pysqlite driver for clarity.
+sqlalchemy_uri = f"sqlite+pysqlite:///{db_file}"
+
+# 5) Create the LangChain SQLDatabase and list tables via SQLAlchemy
+order_db = SQLDatabase.from_uri(sqlalchemy_uri)
+lc_tables = order_db.get_table_names()
+
+st.write(f"LangChain/SQLAlchemy tables: {lc_tables}")
+
+#tables = order_db.get_table_names()
 print(f"DB initialized successfully:: {order_db}")
-print("Tables:", tables)
+print("Tables:", lc_tables)
 
 
 # Initialize SQL Agent
