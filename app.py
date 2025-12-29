@@ -101,12 +101,13 @@ sqlalchemy_uri = f"sqlite+pysqlite:///{db_file}"
 # 5) Create the LangChain SQLDatabase and list tables via SQLAlchemy
 order_db = SQLDatabase.from_uri(sqlalchemy_uri)
 lc_tables = order_db.get_table_names()
+print("lc_tables:", lc_tables)
 
 st.write(f"LangChain/SQLAlchemy tables: {lc_tables}")
 
-#tables = order_db.get_table_names()
+tables = order_db.get_table_names()
 print(f"DB initialized successfully:: {order_db}")
-print("Tables:", lc_tables)
+print("Tables:", tables)
 
 
 # Initialize SQL Agent
