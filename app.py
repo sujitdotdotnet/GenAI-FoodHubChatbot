@@ -184,9 +184,10 @@ with st.sidebar:
                 #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
                 st.session_state.chat_agent_initialized = True
             #st.success("Order details loaded! You can now chat about this order.")
-            st.success("Order details loaded! You can now chat about this order.",tables)
+            st.success(tables)
         else:
             st.warning("Please enter an Order ID to begin.")
+            st.success(tables)
 
     if st.session_state.order_id and st.session_state.chat_agent_initialized:
         st.subheader("Current Order Context:")
