@@ -1,14 +1,15 @@
 ---
-title: Streamlit Template Space
+title: FoodHub Chatbot
 emoji: 🚀
 colorFrom: red
 colorTo: red
 sdk: docker
 app_port: 8501
 tags:
-  - streamlit
+- streamlit
 pinned: false
-short_description: Streamlit template space
+short_description: 'FoodHub Chatbot: AI-Powered Chatbot For a Food Aggregator'
+license: mit
 ---
 
 # Welcome to Streamlit!
