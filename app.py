@@ -56,8 +56,8 @@ DB_PATH = "customer_orders.db"
 db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
 # The URI format for SQLite is 'sqlite:////absolute/path/to/database.db'
 # In a Hugging Face Space, you need the absolute path
-order_db = f'sqlite:////{os.path.abspath(db_path)}'
-
+db_uri = f'sqlite:////{os.path.abspath(db_path)}'
+order_db = SQLDatabase.from_uri(db_uri)
 
 tables = order_db.get_table_names()
 print(f"DB initialized successfully:: {order_db}")
