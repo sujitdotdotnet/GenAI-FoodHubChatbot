@@ -245,13 +245,15 @@ with st.sidebar:
     else:
         st.info("Enter an Order ID in the sidebar to start a conversation.")
         st.subheader("Refer all Order Ids for Testing:")
-        st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+        #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+        st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
 
 # Main chat interface
 if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
     st.warning("Please enter an Order ID in the sidebar to begin chatting.")
     st.subheader("Refer all Order Ids for Testing:")
-    st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+    #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+    st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
 else:
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
