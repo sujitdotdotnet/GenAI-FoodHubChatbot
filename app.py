@@ -47,12 +47,14 @@ llm = None
 modelName="gpt-4o-mini"
 try:
     llm = ChatOpenAI(model_name=modelName, temperature=0.0)
-    print(f"LLM initialized successfully:: {modelName}")
+    #print(f"LLM initialized successfully:: {modelName}")
+    st.success(f"LLM initialized successfully.)
 except Exception as e:
     st.error(f"LLM initialization error: {e}")
-    print(f"LLM initialization error:: {e}")
+    #print(f"LLM initialization error:: {e}")
 
 if not llm:
+    st.error(f"LLM initialization error.")
     st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
@@ -61,7 +63,6 @@ DB_PATH = "customer_orders.db"
 #     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
 #     st.stop()
 # order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
-
 
 # db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
 # The URI format for SQLite is 'sqlite:////absolute/path/to/database.db'
@@ -91,7 +92,7 @@ except Exception as e:
     st.error(f"SQLite open failed: {e}")
     st.stop()
 
-st.write(f"SQLite native tables: {native_tables}")
+#st.write(f"SQLite native tables: {native_tables}")
 
 # 4) Use a correct SQLAlchemy URI for a local file (relative/absolute both fine)
 #    'sqlite:///' + absolute path      (3 slashes + absolute path)
@@ -101,13 +102,14 @@ sqlalchemy_uri = f"sqlite+pysqlite:///{db_file}"
 # 5) Create the LangChain SQLDatabase and list tables via SQLAlchemy
 order_db = SQLDatabase.from_uri(sqlalchemy_uri)
 lc_tables = order_db.get_table_names()
-print("lc_tables:", lc_tables)
+#print("lc_tables:", lc_tables)
 
-st.write(f"LangChain/SQLAlchemy tables: {lc_tables}")
+#st.write(f"LangChain/SQLAlchemy tables: {lc_tables}")
 
 tables = order_db.get_table_names()
-print(f"DB initialized successfully:: {order_db}")
-print("Tables:", tables)
+#print(f"DB initialized successfully:: {order_db}")
+st.success(f"Database initialized successfully.)
+#print("Tables:", tables)
 
 
 # Initialize SQL Agent
@@ -229,8 +231,8 @@ with st.sidebar:
                 st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
                 #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
                 st.session_state.chat_agent_initialized = True
-            #st.success("Order details loaded! You can now chat about this order.")
-            st.success(tables)
+            st.success("Order details loaded! You can now chat about this order.")
+            
         else:
             st.warning("Please enter an Order ID to begin.")
             st.success(tables)
@@ -242,11 +244,14 @@ with st.sidebar:
         st.warning(f"Fetching order details for {st.session_state.order_id}...")
     else:
         st.info("Enter an Order ID in the sidebar to start a conversation.")
-
+        st.subheader("Refer all Order Ids for Testing:")
+        st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
 
 # Main chat interface
 if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
     st.warning("Please enter an Order ID in the sidebar to begin chatting.")
+    st.subheader("Refer all Order Ids for Testing:")
+    st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
 else:
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
