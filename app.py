@@ -31,7 +31,18 @@ except Exception as e:
 #os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
 
 # Initialize LLM
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
+#llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
+
+llm = None
+try:
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
+    print(f"LLM initialized successfully:: {model_name}")
+except Exception as e:
+    st.error(f"LLM initialization error: {e}")
+    print(f"LLM initialization error:: {e}")
+
+if not llm:
+    st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
@@ -39,6 +50,12 @@ if not os.path.exists(DB_PATH):
     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
     st.stop()
 order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+
+
+tables = order_db.get_table_names()
+print(f"DB initialized successfully:: {order_db}")
+print("Tables:", tables)
+
 
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
