@@ -16,22 +16,14 @@ warnings.filterwarnings('ignore')
 # --- Configuration and Initialization ---
 # Load API keys from config.json (or use st.secrets for deployed app)
 try:
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-        OPENAI_API_KEY = config.get("OPENAI_API_KEY")
-        OPENAI_API_BASE = config.get("OPENAI_API_BASE")
-except FileNotFoundError:
-    st.error("config.json not found. Please ensure it's in the same directory.")
-    # Load OpenAI API key and base URL from secrets
-    try:
-        OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-        OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
-        openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
-    except Exception as e:
-        st.error(f"Error loading OpenAI credentials: {e}")
-        st.stop()
+# Load OpenAI API key and base URL from secrets
+
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
+    openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
+
 except Exception as e:
-    st.error(f"Error loading config.json: {e}")
+    st.error(f"Error loading OpenAI credentials: {e}")
     st.stop()
 
 # Set environment variables for Langchain
