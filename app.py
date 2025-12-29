@@ -47,10 +47,16 @@ if not llm:
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
-if not os.path.exists(DB_PATH):
-    st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
-    st.stop()
-order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+# if not os.path.exists(DB_PATH):
+#     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
+#     st.stop()
+# order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+
+
+db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
+# The URI format for SQLite is 'sqlite:////absolute/path/to/database.db'
+# In a Hugging Face Space, you need the absolute path
+order_db = f'sqlite:////{os.path.abspath(db_path)}'
 
 
 tables = order_db.get_table_names()
