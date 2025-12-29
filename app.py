@@ -180,8 +180,8 @@ with st.sidebar:
         st.session_state.chat_agent_initialized = False
         if new_order_id:
             with st.spinner(f"Fetching details for Order ID {new_order_id}..."):
-                #st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for order_id {new_order_id}")
-                st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE order_id = '{new_order_id}'")
+                st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+                #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
                 st.session_state.chat_agent_initialized = True
             st.success("Order details loaded! You can now chat about this order.")
         else:
