@@ -48,7 +48,7 @@ modelName="gpt-4o-mini"
 try:
     llm = ChatOpenAI(model_name=modelName, temperature=0.0)
     #print(f"LLM initialized successfully:: {modelName}")
-    st.success(f"LLM initialized successfully.)
+    st.success(f"LLM initialized successfully.")
 except Exception as e:
     st.error(f"LLM initialization error: {e}")
     #print(f"LLM initialization error:: {e}")
@@ -108,7 +108,7 @@ lc_tables = order_db.get_table_names()
 
 tables = order_db.get_table_names()
 #print(f"DB initialized successfully:: {order_db}")
-st.success(f"Database initialized successfully.)
+st.success(f"Database initialized successfully.")
 #print("Tables:", tables)
 
 
