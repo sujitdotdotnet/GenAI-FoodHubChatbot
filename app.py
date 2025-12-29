@@ -6,7 +6,7 @@ import pandas as pd
 from openai import OpenAI
 ###For DB Load
 from pathlib import Path
-from langchain_community.utilities.sql_database import SQLDatabas
+from langchain_community.utilities.sql_database import SQLDatabase
 
 
 from langchain.agents import Tool, initialize_agent
