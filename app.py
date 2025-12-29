@@ -34,9 +34,10 @@ except Exception as e:
 #llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
 
 llm = None
+modelName="gpt-4o-mini"
 try:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
-    print(f"LLM initialized successfully:: {model_name}")
+    llm = ChatOpenAI(model_name=modelName, temperature=0.0)
+    print(f"LLM initialized successfully:: {modelName}")
 except Exception as e:
     st.error(f"LLM initialization error: {e}")
     print(f"LLM initialization error:: {e}")
