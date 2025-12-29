@@ -47,17 +47,17 @@ if not llm:
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
-# if not os.path.exists(DB_PATH):
-#     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
-#     st.stop()
-# order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+if not os.path.exists(DB_PATH):
+    st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
+    st.stop()
+order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
 
 
-db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
+# db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
 # The URI format for SQLite is 'sqlite:////absolute/path/to/database.db'
 # In a Hugging Face Space, you need the absolute path
-db_uri = f'sqlite:////{os.path.abspath(db_path)}'
-order_db = SQLDatabase.from_uri(db_uri)
+# db_uri = f'sqlite:////{os.path.abspath(db_path)}'
+# order_db = SQLDatabase.from_uri(db_uri)
 
 tables = order_db.get_table_names()
 print(f"DB initialized successfully:: {order_db}")
@@ -67,7 +67,7 @@ print("Tables:", tables)
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
     llm,
-    db=order_db,
+    db=order_db1,
     agent_type="openai-tools",
     verbose=False
 )
