@@ -17,6 +17,12 @@ from langchain_community.agent_toolkits import create_sql_agent
 import warnings
 warnings.filterwarnings('ignore')
 
+
+# MUST be the first Streamlit command on the page
+st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔", layout="centered")
+st.title("🍔 FoodHub Chatbot")
+st.markdown("Your AI-powered assistant for all FoodHub order-related queries.")
+
 # --- Configuration and Initialization ---
 # Load API keys from config.json (or use st.secrets for deployed app)
 try:
@@ -193,9 +199,9 @@ Model's Response: {model_output}
     return llm.predict(prompt).strip()
 
 # --- Streamlit Application ---
-st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔")
-st.title("🍔 FoodHub Chatbot")
-st.markdown("Your AI-powered assistant for all FoodHub order-related queries.")
+#st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔")
+#st.title("🍔 FoodHub Chatbot")
+#st.markdown("Your AI-powered assistant for all FoodHub order-related queries.")
 
 # Initialize chat history and order_id in session state if not already present
 if "messages" not in st.session_state:
