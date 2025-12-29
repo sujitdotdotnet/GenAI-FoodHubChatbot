@@ -38,7 +38,7 @@ DB_PATH = "customer_orders.db"
 if not os.path.exists(DB_PATH):
     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
     st.stop()
-order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
+order_db = SQLDatabase.from_uri(f"sqlite:////content/{DB_PATH}")
 
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
