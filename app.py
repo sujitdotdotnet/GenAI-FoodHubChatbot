@@ -27,8 +27,8 @@ except Exception as e:
     st.stop()
 
 # Set environment variables for Langchain
-os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
-os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
+#os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+#os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
 
 # Initialize LLM
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
@@ -38,7 +38,7 @@ DB_PATH = "customer_orders.db"
 if not os.path.exists(DB_PATH):
     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
     st.stop()
-order_db = SQLDatabase.from_uri(f"sqlite:////content/{DB_PATH}")
+order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
 
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
