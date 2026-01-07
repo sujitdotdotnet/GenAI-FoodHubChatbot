@@ -176,6 +176,11 @@ Model's Response: {model_output}
 """
     return llm.predict(prompt).strip()
 
+
+
+def order_exists(order_list, input_orderid):
+    return input_orderid in order_list
+
 # Initialize chat history and order_id in session state if not already present
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -190,30 +195,12 @@ if "chat_agent_initialized" not in st.session_state:
 with st.sidebar:
     st.header("Order Details")
     new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
-       
-    # Step 1: Input Check
-    resSidebar = input_guard_check(new_order_id)
-
-    # if resSidebar == "0":
-    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-    #     # Reset chat if order ID changes
-    #     st.session_state.messages = []
-    #     st.session_state.order_context_raw = {}
-    #     st.session_state.chat_agent_initialized = False
-    # elif resSidebar == "1":
-    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-    #     # Reset chat if order ID changes
-    #     st.session_state.messages = []
-    #     st.session_state.order_context_raw = {}
-    #     st.session_state.chat_agent_initialized = False
-    # elif resSidebar == "3":
-    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-    #     # Reset chat if order ID changes
-    #     st.session_state.messages = []
-    #     st.session_state.order_context_raw = {}
-    #     st.session_state.chat_agent_initialized = False
-    # el
-    if resSidebar == "2":
+    order_ids = {
+        "O12486", "O12487", "O12488", "O12489", "O12490",
+        "O12491", "O12492", "O12493", "O12494", "O12495"
+    }
+    found = order_exists(order_ids, new_order_id)
+    if found == True
         with st.spinner("Thinking..."):
             if st.session_state.order_id != new_order_id:
                 st.session_state.order_id = new_order_id
@@ -224,11 +211,9 @@ with st.sidebar:
                 if new_order_id:
                     with st.spinner(f"Fetching details for Order ID {new_order_id}..."):
                         st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+                        #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
                         st.session_state.chat_agent_initialized = True
     
-                        #st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
-                        #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
-                        
                     st.success("Order details loaded! You can now chat about this order.")
                     
                 else:
@@ -238,32 +223,28 @@ with st.sidebar:
                     st.session_state.order_context_raw = {}
                     st.session_state.chat_agent_initialized = False
                     st.success(tables)
-                                                
-    # else:
-    #     st.warning("We are facing some technical issues, please try again later.")
-    #     # Reset chat if order ID changes
-    #     st.session_state.messages = []
-    #     st.session_state.order_context_raw = {}
-    #     st.session_state.chat_agent_initialized = False
-    #     st.session_state.order_id = ""
+    
+        if st.session_state.order_id and st.session_state.chat_agent_initialized:
+            st.subheader("Current Order Context:")
+            st.json(st.session_state.order_context_raw)
+        elif st.session_state.order_id and not st.session_state.chat_agent_initialized:
+            st.warning(f"Fetching order details for {st.session_state.order_id}...")
+        else:
+            st.info("Enter an Order ID in the sidebar to start a conversation.")
+            #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+            # Reset chat if order ID changes
+            st.session_state.messages = []
+            st.session_state.order_context_raw = {}
+            st.session_state.chat_agent_initialized = False
 
-#st.markdown(assistant_responseSidebar)
-#st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
-        
-
-    if st.session_state.order_id and st.session_state.chat_agent_initialized:
-        st.subheader("Current Order Context:")
-        st.json(st.session_state.order_context_raw)
-    elif st.session_state.order_id and not st.session_state.chat_agent_initialized:
-        st.warning(f"Fetching order details for {st.session_state.order_id}...")
     else:
-        st.info("Enter an Order ID in the sidebar to start a conversation.")
-        #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
-        # Reset chat if order ID changes
-        st.session_state.messages = []
-        st.session_state.order_context_raw = {}
-        st.session_state.chat_agent_initialized = False
-        
+            st.info("Enter a valid Order ID in the sidebar to start a conversation.")
+            #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+            # Reset chat if order ID changes
+            st.session_state.messages = []
+            st.session_state.order_context_raw = {}
+            st.session_state.chat_agent_initialized = False
+
     st.subheader("Refer all Order Ids for Testing:")
     st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
     st.write("""Sample Test Queries:
