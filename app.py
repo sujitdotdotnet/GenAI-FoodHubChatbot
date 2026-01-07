@@ -196,10 +196,22 @@ with st.sidebar:
 
     if resSidebar == "0":
         st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+        # Reset chat if order ID changes
+        st.session_state.messages = []
+        st.session_state.order_context_raw = {}
+        st.session_state.chat_agent_initialized = False
     elif resSidebar == "1":
         st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+        # Reset chat if order ID changes
+        st.session_state.messages = []
+        st.session_state.order_context_raw = {}
+        st.session_state.chat_agent_initialized = False
     elif resSidebar == "3":
         st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+        # Reset chat if order ID changes
+        st.session_state.messages = []
+        st.session_state.order_context_raw = {}
+        st.session_state.chat_agent_initialized = False
     elif resSidebar == "2":
         with st.spinner("Thinking..."):
             if st.session_state.order_id != new_order_id:
@@ -220,15 +232,19 @@ with st.sidebar:
                     
                 else:
                     st.warning("Please enter an Order ID to begin.")
+                    # Reset chat if order ID changes
+                    st.session_state.messages = []
+                    st.session_state.order_context_raw = {}
+                    st.session_state.chat_agent_initialized = False
                     st.success(tables)
                                                 
-    else:
-        st.warning("We are facing some technical issues, please try again later.")
-        # Reset chat if order ID changes
-        st.session_state.messages = []
-        st.session_state.order_context_raw = {}
-        st.session_state.chat_agent_initialized = False
-        st.session_state.order_id = ""
+    # else:
+    #     st.warning("We are facing some technical issues, please try again later.")
+    #     # Reset chat if order ID changes
+    #     st.session_state.messages = []
+    #     st.session_state.order_context_raw = {}
+    #     st.session_state.chat_agent_initialized = False
+    #     st.session_state.order_id = ""
 
 #st.markdown(assistant_responseSidebar)
 #st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
@@ -242,6 +258,10 @@ with st.sidebar:
     else:
         st.info("Enter an Order ID in the sidebar to start a conversation.")
         #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
+        # Reset chat if order ID changes
+        st.session_state.messages = []
+        st.session_state.order_context_raw = {}
+        st.session_state.chat_agent_initialized = False
         
     st.subheader("Refer all Order Ids for Testing:")
     st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
