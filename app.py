@@ -191,59 +191,59 @@ with st.sidebar:
     st.header("Order Details")
     new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
     
-        with st.spinner("Thinking..."):
-            # Step 1: Input Check
-            resSidebar = input_guard_check(new_order_id)
-            assistant_responseSidebar = ""
-    
-            if resSidebar == "0":
-                assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-            elif resSidebar == "1":
-                assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-            elif resSidebar == "3":
-                assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-            elif resSidebar == "2":
-                if st.session_state.order_id != new_order_id:
-                    st.session_state.order_id = new_order_id
-                    # Reset chat if order ID changes
-                    st.session_state.messages = []
-                    st.session_state.order_context_raw = {}
-                    st.session_state.chat_agent_initialized = False
-                    if new_order_id:
-                        with st.spinner(f"Fetching details for Order ID {new_order_id}..."):
-                            
-                            agent_raw_responseSidebar = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
-    
-                            # Step 3: Output-level guard check
-                            if output_guard_check(agent_raw_responseSidebar) == "BLOCK":
-                                assistant_responseSidebar = "Your request is being forwarded to a customer support specialist. A human agent will assist you shortly."
-                                # Reset chat if order ID changes
-                                st.session_state.chat_agent_initialized = False
-                                st.session_state.order_id = ""
-                            else:
-                                assistant_responseSidebar = agent_raw_responseSidebar
-                                st.session_state.order_context_raw=agent_raw_responseSidebar
-                            
-                            
-                            #st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
-                            #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
-                            st.session_state.chat_agent_initialized = True
-                        st.success("Order details loaded! You can now chat about this order.")
-                        
-                    else:
-                        st.warning("Please enter an Order ID to begin.")
-                        st.success(tables)
-                                                    
-            else:
-                assistant_responseSidebar = "We are facing some technical issues, please try again later."
+    with st.spinner("Thinking..."):
+        # Step 1: Input Check
+        resSidebar = input_guard_check(new_order_id)
+        assistant_responseSidebar = ""
+
+        if resSidebar == "0":
+            assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        elif resSidebar == "1":
+            assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        elif resSidebar == "3":
+            assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        elif resSidebar == "2":
+            if st.session_state.order_id != new_order_id:
+                st.session_state.order_id = new_order_id
                 # Reset chat if order ID changes
                 st.session_state.messages = []
                 st.session_state.order_context_raw = {}
                 st.session_state.chat_agent_initialized = False
-                st.session_state.order_id = ""
-    
-        #st.markdown(assistant_responseSidebar)
-        #st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
+                if new_order_id:
+                    with st.spinner(f"Fetching details for Order ID {new_order_id}..."):
+                        
+                        agent_raw_responseSidebar = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+
+                        # Step 3: Output-level guard check
+                        if output_guard_check(agent_raw_responseSidebar) == "BLOCK":
+                            assistant_responseSidebar = "Your request is being forwarded to a customer support specialist. A human agent will assist you shortly."
+                            # Reset chat if order ID changes
+                            st.session_state.chat_agent_initialized = False
+                            st.session_state.order_id = ""
+                        else:
+                            assistant_responseSidebar = agent_raw_responseSidebar
+                            st.session_state.order_context_raw=agent_raw_responseSidebar
+                        
+                        
+                        #st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+                        #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
+                        st.session_state.chat_agent_initialized = True
+                    st.success("Order details loaded! You can now chat about this order.")
+                    
+                else:
+                    st.warning("Please enter an Order ID to begin.")
+                    st.success(tables)
+                                                
+        else:
+            assistant_responseSidebar = "We are facing some technical issues, please try again later."
+            # Reset chat if order ID changes
+            st.session_state.messages = []
+            st.session_state.order_context_raw = {}
+            st.session_state.chat_agent_initialized = False
+            st.session_state.order_id = ""
+
+    #st.markdown(assistant_responseSidebar)
+    #st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
         
 
     if st.session_state.order_id and st.session_state.chat_agent_initialized:
