@@ -200,7 +200,7 @@ with st.sidebar:
         "O12491", "O12492", "O12493", "O12494", "O12495"
     }
     found = order_exists(order_ids, new_order_id)
-    if found == True
+    if found == True:
         with st.spinner("Thinking..."):
             if st.session_state.order_id != new_order_id:
                 st.session_state.order_id = new_order_id
