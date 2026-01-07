@@ -190,20 +190,20 @@ if "chat_agent_initialized" not in st.session_state:
 with st.sidebar:
     st.header("Order Details")
     new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
-    with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
-                # Step 1: Input Check
-                res = input_guard_check(new_order_id)
-                assistant_response = ""
-
-                if res == "0":
-                    assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please let me know how I can assist you with those!"
-                elif res == "1":
-                    assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please let me know how I can assist you with those!"
-                elif res == "3":
-                    assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please let me know how I can assist you with those!"
-                elif res == "2":
-                    if st.session_state.order_id != new_order_id:
+    if st.session_state.order_id != new_order_id:
+        with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    # Step 1: Input Check
+                    res = input_guard_check(new_order_id)
+                    assistant_response = ""
+    
+                    if res == "0":
+                        assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+                    elif res == "1":
+                        assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+                    elif res == "3":
+                        assistant_response = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+                    elif res == "2":
                         st.session_state.order_id = new_order_id
                         # Reset chat if order ID changes
                         st.session_state.messages = []
@@ -231,12 +231,12 @@ with st.sidebar:
                             st.warning("Please enter an Order ID to begin.")
                             st.success(tables)
                                                             
-                else:
-                    assistant_response = "We are facing some technical issues, please try again later."
-
-            st.markdown(assistant_response)
-            st.session_state.messages.append({"role": "assistant", "content": assistant_response})    
+                    else:
+                        assistant_response = "We are facing some technical issues, please try again later."
     
+                st.markdown(assistant_response)
+                st.session_state.messages.append({"role": "assistant", "content": assistant_response})    
+        
 
     if st.session_state.order_id and st.session_state.chat_agent_initialized:
         st.subheader("Current Order Context:")
