@@ -193,14 +193,13 @@ with st.sidebar:
        
     # Step 1: Input Check
     resSidebar = input_guard_check(new_order_id)
-    assistant_responseSidebar = ""
 
     if resSidebar == "0":
-        assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
     elif resSidebar == "1":
-        assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
     elif resSidebar == "3":
-        assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
+        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
     elif resSidebar == "2":
         with st.spinner("Thinking..."):
             if st.session_state.order_id != new_order_id:
@@ -211,21 +210,9 @@ with st.sidebar:
                 st.session_state.chat_agent_initialized = False
                 if new_order_id:
                     with st.spinner(f"Fetching details for Order ID {new_order_id}..."):
-                        
-                        agent_raw_responseSidebar = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+                        st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
+                        st.session_state.chat_agent_initialized = True
     
-                        # Step 3: Output-level guard check
-                        if output_guard_check(agent_raw_responseSidebar) == "BLOCK":
-                            assistant_responseSidebar = "Your request is being forwarded to a customer support specialist. A human agent will assist you shortly."
-                            # Reset chat if order ID changes
-                            st.session_state.chat_agent_initialized = False
-                            st.session_state.order_id = ""
-                        else:
-                            st.session_state.chat_agent_initialized = True
-                            assistant_responseSidebar = agent_raw_responseSidebar
-                            st.session_state.order_context_raw=agent_raw_responseSidebar
-                        
-                        
                         #st.session_state.order_context_raw = sqlite_agent.invoke(f"Fetch all columns for Order ID {new_order_id}")
                         #st.session_state.order_context_raw = sqlite_agent.invoke(f"SELECT * FROM orders WHERE Order ID = '{new_order_id}'")
                         
@@ -236,7 +223,7 @@ with st.sidebar:
                     st.success(tables)
                                                 
     else:
-        assistant_responseSidebar = "We are facing some technical issues, please try again later."
+        st.warning("We are facing some technical issues, please try again later.")
         # Reset chat if order ID changes
         st.session_state.messages = []
         st.session_state.order_context_raw = {}
