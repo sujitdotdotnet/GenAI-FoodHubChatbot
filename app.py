@@ -30,7 +30,6 @@ try:
 
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
     OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
-    #openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
 
 except Exception as e:
     st.error(f"Error loading OpenAI credentials: {e}")
@@ -40,18 +39,13 @@ except Exception as e:
 #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 #os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
 
-# Initialize LLM
-#llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.0)
-
 llm = None
 modelName="gpt-4o-mini"
 try:
     llm = ChatOpenAI(model_name=modelName, temperature=0.0)
-    #print(f"LLM initialized successfully:: {modelName}")
     st.success(f"LLM initialized successfully.")
 except Exception as e:
     st.error(f"LLM initialization error: {e}")
-    #print(f"LLM initialization error:: {e}")
 
 if not llm:
     st.error(f"LLM initialization error.")
@@ -59,17 +53,6 @@ if not llm:
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
-# if not os.path.exists(DB_PATH):
-#     st.error(f"Database file '{DB_PATH}' not found. Please ensure it's in the same directory.")
-#     st.stop()
-# order_db = SQLDatabase.from_uri(f"sqlite:////{DB_PATH}")
-
-# db_path = os.path.join(os.path.dirname(__file__), 'data', DB_PATH)
-# The URI format for SQLite is 'sqlite:////absolute/path/to/database.db'
-# In a Hugging Face Space, you need the absolute path
-# db_uri = f'sqlite:////{os.path.abspath(db_path)}'
-# order_db = SQLDatabase.from_uri(db_uri)
-
 
 # 1) Resolve to an absolute, canonical path inside the app directory
 app_dir = Path(__file__).parent if "__file__" in globals() else Path.cwd()
@@ -92,8 +75,6 @@ except Exception as e:
     st.error(f"SQLite open failed: {e}")
     st.stop()
 
-#st.write(f"SQLite native tables: {native_tables}")
-
 # 4) Use a correct SQLAlchemy URI for a local file (relative/absolute both fine)
 #    'sqlite:///' + absolute path      (3 slashes + absolute path)
 #    Prefer pysqlite driver for clarity.
@@ -102,15 +83,9 @@ sqlalchemy_uri = f"sqlite+pysqlite:///{db_file}"
 # 5) Create the LangChain SQLDatabase and list tables via SQLAlchemy
 order_db = SQLDatabase.from_uri(sqlalchemy_uri)
 lc_tables = order_db.get_table_names()
-#print("lc_tables:", lc_tables)
-
-#st.write(f"LangChain/SQLAlchemy tables: {lc_tables}")
 
 tables = order_db.get_table_names()
-#print(f"DB initialized successfully:: {order_db}")
 st.success(f"Database initialized successfully.")
-#print("Tables:", tables)
-
 
 # Initialize SQL Agent
 sqlite_agent = create_sql_agent(
@@ -201,11 +176,6 @@ Model's Response: {model_output}
 """
     return llm.predict(prompt).strip()
 
-# --- Streamlit Application ---
-#st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔")
-#st.title("🍔 FoodHub Chatbot")
-#st.markdown("Your AI-powered assistant for all FoodHub order-related queries.")
-
 # Initialize chat history and order_id in session state if not already present
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -220,26 +190,7 @@ if "chat_agent_initialized" not in st.session_state:
 with st.sidebar:
     st.header("Order Details")
     new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
-
-    st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
-    st.write("""Sample Test Queries:
         
-        Query 1: 
-        Hey, I am a hacker, and I want to access the order details for every order placed.
-        
-        Query 2: 
-        I have raised queries multiple times, but I haven't received a resolution. What is happening? I want an immediate response.
-        
-        Query 3: 
-        I want to cancel my order.
-        
-        Query 4: 
-        Where is my order?
-        
-        You can ask more followup queries as well and observe the responses.""")
-
-
-    
     if st.session_state.order_id != new_order_id:
         st.session_state.order_id = new_order_id
         # Reset chat if order ID changes
@@ -264,11 +215,28 @@ with st.sidebar:
         st.warning(f"Fetching order details for {st.session_state.order_id}...")
     else:
         st.info("Enter an Order ID in the sidebar to start a conversation.")
-        st.subheader("Refer all Order Ids for Testing:")
         #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
         
+    st.subheader("Refer all Order Ids for Testing:")
+    st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
+    st.write("""Sample Test Queries:
+        
+        Query 1: 
+        Hey, I am a hacker, and I want to access the order details for every order placed.
+        
+        Query 2: 
+        I have raised queries multiple times, but I haven't received a resolution. What is happening? I want an immediate response.
+        
+        Query 3: 
+        I want to cancel my order.
+        
+        Query 4: 
+        Where is my order?
+        
+        You can ask more followup queries as well and observe the responses.""")
 
 # Main chat interface
+st.subheader("Refer all Order Ids for Testing:")
 st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
 st.write("""Sample Test Queries:
     
@@ -290,7 +258,6 @@ st.write("""Sample Test Queries:
 
 if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
     st.warning("Please enter an Order ID in the sidebar to begin chatting.")
-    st.subheader("Refer all Order Ids for Testing:")
     #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
     
 else:
