@@ -194,6 +194,7 @@ if "chat_agent_initialized" not in st.session_state:
 # Sidebar for Order ID input
 with st.sidebar:
     st.header("Order Details")
+    st.session_state.order_id = ""
     new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
     order_ids = {
         "O12486", "O12487", "O12488", "O12489", "O12490",
@@ -234,6 +235,7 @@ with st.sidebar:
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
             st.session_state.order_id = ""
+            st.text_input("Enter Order ID to start chat:", "")
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
@@ -243,6 +245,7 @@ with st.sidebar:
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
             st.session_state.order_id = ""
+            st.text_input("Enter Order ID to start chat:", "")
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
