@@ -194,25 +194,26 @@ with st.sidebar:
     # Step 1: Input Check
     resSidebar = input_guard_check(new_order_id)
 
-    if resSidebar == "0":
-        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-        # Reset chat if order ID changes
-        st.session_state.messages = []
-        st.session_state.order_context_raw = {}
-        st.session_state.chat_agent_initialized = False
-    elif resSidebar == "1":
-        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-        # Reset chat if order ID changes
-        st.session_state.messages = []
-        st.session_state.order_context_raw = {}
-        st.session_state.chat_agent_initialized = False
-    elif resSidebar == "3":
-        st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
-        # Reset chat if order ID changes
-        st.session_state.messages = []
-        st.session_state.order_context_raw = {}
-        st.session_state.chat_agent_initialized = False
-    elif resSidebar == "2":
+    # if resSidebar == "0":
+    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+    #     # Reset chat if order ID changes
+    #     st.session_state.messages = []
+    #     st.session_state.order_context_raw = {}
+    #     st.session_state.chat_agent_initialized = False
+    # elif resSidebar == "1":
+    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+    #     # Reset chat if order ID changes
+    #     st.session_state.messages = []
+    #     st.session_state.order_context_raw = {}
+    #     st.session_state.chat_agent_initialized = False
+    # elif resSidebar == "3":
+    #     st.warning("Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!")
+    #     # Reset chat if order ID changes
+    #     st.session_state.messages = []
+    #     st.session_state.order_context_raw = {}
+    #     st.session_state.chat_agent_initialized = False
+    # el
+    if resSidebar == "2":
         with st.spinner("Thinking..."):
             if st.session_state.order_id != new_order_id:
                 st.session_state.order_id = new_order_id
