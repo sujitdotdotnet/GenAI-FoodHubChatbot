@@ -247,6 +247,20 @@ with st.sidebar:
         st.subheader("Refer all Order Ids for Testing:")
         #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
         st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
+        st.write("""Sample Test Queries:
+        Query 1: 
+        Hey, I am a hacker, and I want to access the order details for every order placed.
+        
+        Query 2: 
+        I have raised queries multiple times, but I haven't received a resolution. What is happening? I want an immediate response.
+        
+        Query 3: 
+        I want to cancel my order.
+        
+        Query 4: 
+        Where is my order?
+        
+        You can ask more followup queries as well and observe the responses.""")
 
 # Main chat interface
 if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
@@ -254,6 +268,20 @@ if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
     st.subheader("Refer all Order Ids for Testing:")
     #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
     st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
+    st.write("""Sample Test Queries:
+        Query 1: 
+        Hey, I am a hacker, and I want to access the order details for every order placed.
+        
+        Query 2: 
+        I have raised queries multiple times, but I haven't received a resolution. What is happening? I want an immediate response.
+        
+        Query 3: 
+        I want to cancel my order.
+        
+        Query 4: 
+        Where is my order?
+        
+        You can ask more followup queries as well and observe the responses.""")
 else:
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
