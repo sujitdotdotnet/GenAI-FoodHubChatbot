@@ -236,6 +236,7 @@ with st.sidebar:
         You can ask more followup queries as well and observe the responses.""")
 
 # Main chat interface
+st.warning("Please enter an Order ID in the sidebar to begin chatting.")
 st.subheader("Refer all Order Ids for Testing:")
 st.write("Here are the Order IDs: O12486,O12487,O12488,O12489,O12490,O12491,O12492,O12493,O12494,O12495")
 st.write("""Sample Test Queries:
