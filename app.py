@@ -199,19 +199,10 @@ with st.sidebar:
     
                     if resSidebar == "0":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-                        # Reset chat if order ID changes
-                        st.session_state.chat_agent_initialized = False
-                        st.session_state.order_id = ""
                     elif resSidebar == "1":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-                        # Reset chat if order ID changes
-                        st.session_state.chat_agent_initialized = False
-                        st.session_state.order_id = ""
                     elif resSidebar == "3":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
-                        # Reset chat if order ID changes
-                        st.session_state.chat_agent_initialized = False
-                        st.session_state.order_id = ""
                     elif resSidebar == "2":
                         st.session_state.order_id = new_order_id
                         # Reset chat if order ID changes
@@ -251,7 +242,7 @@ with st.sidebar:
                         st.session_state.chat_agent_initialized = False
                         st.session_state.order_id = ""
     
-                st.markdown(assistant_responseSidebar)
+                #st.markdown(assistant_responseSidebar)
                 st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
         
 
