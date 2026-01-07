@@ -233,14 +233,16 @@ with st.sidebar:
             st.info("Enter an Order ID in the sidebar to start a conversation.")
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
+            st.session_state.order_id = ""
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
 
     else:
-            st.info("Enter a valid Order ID in the sidebar to start a conversation.")
+            st.warning("Enter a valid Order ID in the sidebar to start a conversation.")
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
+            st.session_state.order_id = ""
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
