@@ -200,19 +200,16 @@ with st.sidebar:
                     if resSidebar == "0":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
                         # Reset chat if order ID changes
-                        new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
                         st.session_state.chat_agent_initialized = False
                         st.session_state.order_id = ""
                     elif resSidebar == "1":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
                         # Reset chat if order ID changes
-                        new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
                         st.session_state.chat_agent_initialized = False
                         st.session_state.order_id = ""
                     elif resSidebar == "3":
                         assistant_responseSidebar = "Apologies, I’m currently only able to help with information about your placed orders. Please Enter an Order ID to start chat!"
                         # Reset chat if order ID changes
-                        new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
                         st.session_state.chat_agent_initialized = False
                         st.session_state.order_id = ""
                     elif resSidebar == "2":
@@ -230,7 +227,6 @@ with st.sidebar:
                                 if output_guard_check(agent_raw_responseSidebar) == "BLOCK":
                                     assistant_responseSidebar = "Your request is being forwarded to a customer support specialist. A human agent will assist you shortly."
                                     # Reset chat if order ID changes
-                                    new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
                                     st.session_state.chat_agent_initialized = False
                                     st.session_state.order_id = ""
                                 else:
@@ -253,7 +249,6 @@ with st.sidebar:
                         st.session_state.messages = []
                         st.session_state.order_context_raw = {}
                         st.session_state.chat_agent_initialized = False
-                        new_order_id = st.text_input("Enter Order ID to start chat:", st.session_state.order_id)
                         st.session_state.order_id = ""
     
                 #st.markdown(assistant_responseSidebar)
