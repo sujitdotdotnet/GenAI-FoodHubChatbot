@@ -193,7 +193,7 @@ with st.sidebar:
     with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 # Step 1: Input Check
-                res = input_guard_check(prompt)
+                res = input_guard_check(new_order_id)
                 assistant_response = ""
 
                 if res == "0":
