@@ -243,7 +243,7 @@ with st.sidebar:
                         st.session_state.order_id = ""
     
                 #st.markdown(assistant_responseSidebar)
-                st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
+                #st.session_state.messages.append({"role": "assistant", "content": assistant_responseSidebar})    
         
 
     if st.session_state.order_id and st.session_state.chat_agent_initialized:
