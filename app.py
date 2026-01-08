@@ -295,6 +295,7 @@ if not st.session_state.order_id or not st.session_state.chat_agent_initialized:
     #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
     
 else:
+    st.success("Order details loaded! You can now chat about this order: ",st.session_state.order_id)
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
