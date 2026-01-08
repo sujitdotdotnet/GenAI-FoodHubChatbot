@@ -21,7 +21,7 @@ warnings.filterwarnings('ignore')
 # MUST be the first Streamlit command on the page
 st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔", layout="centered")
 st.title("🍔 FoodHub Chatbot")
-st.markdown("Your AI-powered assistant for all FoodHub order-related queries.")
+st.markdown("AI-powered assistant for all FoodHub order-related queries (Using Streamlit, LangChain, SQLite, and OpenAI, focused on safe, real‑world customer support scenarios). Disclaimer: This is a project created for study purposes. It is intended to showcase technical skills and should not be used as a basis for real-world business decisions.")
 
 # --- Configuration and Initialization ---
 # Load API keys from config.json (or use st.secrets for deployed app)
