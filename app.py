@@ -235,7 +235,7 @@ with st.sidebar:
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
             st.session_state.order_id = ""
-            st.text_input("Enter Order ID to start chat:", "")
+            st.text_input("Enter Order ID to start chat: ", "")
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
@@ -245,7 +245,7 @@ with st.sidebar:
             #st.json(sqlite_agent.invoke(f"Fetch all Order ID"))
             # Reset chat if order ID changes
             st.session_state.order_id = ""
-            st.text_input("Enter Order ID to start chat:", "")
+            st.text_input("Enter Order ID to start chat: ", "")
             st.session_state.messages = []
             st.session_state.order_context_raw = {}
             st.session_state.chat_agent_initialized = False
