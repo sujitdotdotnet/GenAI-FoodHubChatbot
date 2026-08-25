@@ -81,7 +81,7 @@ try:
     llm = ChatOpenAI(
         model_name=modelName,
         temperature=0.0,
-        openai_api_key=api_key,
+        openai_api_key="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",
         openai_api_base=user_api_base.strip() if user_api_base else None
     )
     # --- Test the key immediately ---
