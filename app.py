@@ -23,33 +23,75 @@ st.set_page_config(page_title="FoodHub Chatbot", page_icon="🍔", layout="cente
 st.title("🍔 FoodHub Chatbot")
 st.markdown("AI-powered assistant for all FoodHub order-related queries (Using Streamlit, LangChain, SQLite, and OpenAI, focused on safe, real‑world customer support scenarios). Disclaimer: This is a project created for study purposes. It is intended to showcase technical skills and should not be used as a basis for real-world business decisions.")
 
+
+with st.sidebar:
+    st.header("OpenAI Credentials")
+    user_api_key = st.text_input("OpenAI API Key", type="password", help="Enter your OpenAI API key")
+    user_api_base = st.text_input("OpenAI Base URL (optional)", placeholder="https://api.openai.com/v1", 
+                                   help="Leave blank to use the default")
+
 # --- Configuration and Initialization ---
 # Load API keys from config.json (or use st.secrets for deployed app)
 try:
 # Load OpenAI API key and base URL from secrets
 
-    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-    OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
-
-except Exception as e:
-    st.error(f"Error loading OpenAI credentials: {e}")
-    st.stop()
+    #OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    #OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
+    # Try secrets first (for deployment), then fallback to GUI input
+    if "OPENAI_API_KEY" in st.secrets:
+        api_key = st.secrets["OPENAI_API_KEY"]
+    else:
+        api_key = user_api_key   # from GUI
+    
+    except Exception as e:
+        st.error(f"Error loading OpenAI credentials: {e}")
+        st.stop()
 
 # Set environment variables for Langchain
 #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 #os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
 
-llm = None
-modelName="gpt-4o-mini"
-try:
-    llm = ChatOpenAI(model_name=modelName, temperature=0.0)
-    st.success(f"LLM initialized successfully.")
-except Exception as e:
-    st.error(f"LLM initialization error: {e}")
 
-if not llm:
-    st.error(f"LLM initialization error.")
+### Keep API Key in Session Variable
+if "api_key" not in st.session_state:
+    st.session_state.api_key = ""
+if "api_base" not in st.session_state:
+    st.session_state.api_base = ""
+
+# In the sidebar
+user_api_key = st.text_input("OpenAI API Key", value=st.session_state.api_key, type="password")
+user_api_base = st.text_input("OpenAI Base URL", value=st.session_state.api_base)
+
+# Update session state when changed
+if user_api_key != st.session_state.api_key:
+    st.session_state.api_key = user_api_key
+if user_api_base != st.session_state.api_base:
+    st.session_state.api_base = user_api_base
+
+
+
+
+# --- LLM Initialisation using GUI inputs ---
+llm = None
+modelName = "gpt-4o-mini"
+
+if not user_api_key:
+    st.warning("Please enter your OpenAI API key in the sidebar to continue.")
     st.stop()
+else:
+    # Set environment variables or directly pass to ChatOpenAI
+    try:
+        # Option 1: pass directly to the constructor
+        llm = ChatOpenAI(
+            model_name=modelName,
+            temperature=0.0,
+            openai_api_key=user_api_key,
+            openai_api_base=user_api_base if user_api_base else None
+        )
+        st.success("LLM initialised successfully.")
+    except Exception as e:
+        st.error(f"LLM initialisation error: {e}")
+        st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
