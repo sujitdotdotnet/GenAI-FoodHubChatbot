@@ -62,7 +62,7 @@ with st.sidebar:
 
 # --- LLM Initialisation using GUI inputs (or secrets) ---
 llm = None
-modelName = "gpt-4o-mini"
+modelName = "gpt-5.4-mini"
 
 # Try secrets first (for deployment), else use GUI input
 try:
