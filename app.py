@@ -34,9 +34,15 @@ with st.sidebar:
     # Load API keys from config.json (or use st.secrets for deployed app)
     # Try to get from st.secrets (for deployment), otherwise use GUI input
     try:
-        api_key = st.secrets["OPENAI_API_KEY"]
+        api_key = os.environ.get("OPENAI_API_KEY")
     except (AttributeError, KeyError, FileNotFoundError):
         api_key = user_api_key   # from GUI
+    
+    if not api_key:
+        try:
+            api_key = st.secrets["OPENAI_API_KEY"]
+        except (AttributeError, KeyError, FileNotFoundError):
+            api_key = user_api_key   # from GUI
 
     # Set environment variables for Langchain
     #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
@@ -53,6 +59,11 @@ with st.sidebar:
 #user_api_key = st.text_input("OpenAI API Key", value=st.session_state.api_key, type="password")
 #user_api_base = st.text_input("OpenAI Base URL", value=st.session_state.api_base)
 
+    if not api_key:
+    st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
+    st.stop()
+    
+    
     # Update session state when changed
     if user_api_key != st.session_state.api_key:
         st.session_state.api_key = user_api_key
@@ -64,15 +75,8 @@ with st.sidebar:
 llm = None
 modelName = "gpt-4o-mini"
 
-# Try secrets first (for deployment), else use GUI input
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-except (AttributeError, KeyError, FileNotFoundError):
-    api_key = user_api_key
 
-if not api_key:
-    st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
-    st.stop()
+
 
 # Strip whitespace (common copy-paste issue)
 api_key = api_key.strip()
