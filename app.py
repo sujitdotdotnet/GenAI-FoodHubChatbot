@@ -38,26 +38,26 @@ with st.sidebar:
     except (AttributeError, KeyError, FileNotFoundError):
         api_key = user_api_key   # from GUI
 
-# Set environment variables for Langchain
-#os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
-#os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
+    # Set environment variables for Langchain
+    #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+    #os.environ["OPENAI_BASE_URL"] = OPENAI_API_BASE
 
 
-### Keep API Key in Session Variable
-if "api_key" not in st.session_state:
-    st.session_state.api_key = ""
-if "api_base" not in st.session_state:
-    st.session_state.api_base = ""
+    ### Keep API Key in Session Variable
+    if "api_key" not in st.session_state:
+        st.session_state.api_key = ""
+    if "api_base" not in st.session_state:
+        st.session_state.api_base = ""
 
 # In the sidebar
-user_api_key = st.text_input("OpenAI API Key", value=st.session_state.api_key, type="password")
-user_api_base = st.text_input("OpenAI Base URL", value=st.session_state.api_base)
+#user_api_key = st.text_input("OpenAI API Key", value=st.session_state.api_key, type="password")
+#user_api_base = st.text_input("OpenAI Base URL", value=st.session_state.api_base)
 
-# Update session state when changed
-if user_api_key != st.session_state.api_key:
-    st.session_state.api_key = user_api_key
-if user_api_base != st.session_state.api_base:
-    st.session_state.api_base = user_api_base
+    # Update session state when changed
+    if user_api_key != st.session_state.api_key:
+        st.session_state.api_key = user_api_key
+    if user_api_base != st.session_state.api_base:
+        st.session_state.api_base = user_api_base
 
 
 # --- LLM Initialisation using GUI inputs (or secrets) ---
