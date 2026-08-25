@@ -74,16 +74,21 @@ if not api_key:
     st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
     st.stop()
 
+# Strip whitespace (common copy-paste issue)
+api_key = api_key.strip()
+
 try:
     llm = ChatOpenAI(
         model_name=modelName,
         temperature=0.0,
         openai_api_key=api_key,
-        openai_api_base=user_api_base if user_api_base else None
+        openai_api_base=user_api_base.strip() if user_api_base else None
     )
-    st.sidebar.success("LLM initialised successfully.")
+    # --- Test the key immediately ---
+    llm.predict("Say hello")
+    st.sidebar.success("✅ LLM initialised and authenticated successfully.")
 except Exception as e:
-    st.sidebar.error(f"LLM initialisation error: {e}")
+    st.sidebar.error(f"❌ LLM authentication error: {e}\nPlease verify your API key and base URL.")
     st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
