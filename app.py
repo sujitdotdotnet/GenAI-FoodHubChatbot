@@ -30,13 +30,13 @@ with st.sidebar:
     user_api_base = st.text_input("OpenAI Base URL (optional)", placeholder="https://api.openai.com/v1", 
                                    help="Leave blank to use the default")
 
-# --- Configuration and Initialization ---
-# Load API keys from config.json (or use st.secrets for deployed app)
-# Try to get from st.secrets (for deployment), otherwise use GUI input
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-except (AttributeError, KeyError, FileNotFoundError):
-    api_key = user_api_key   # from GUI
+    # --- Configuration and Initialization ---
+    # Load API keys from config.json (or use st.secrets for deployed app)
+    # Try to get from st.secrets (for deployment), otherwise use GUI input
+    try:
+        api_key = st.secrets["OPENAI_API_KEY"]
+    except (AttributeError, KeyError, FileNotFoundError):
+        api_key = user_api_key   # from GUI
 
 # Set environment variables for Langchain
 #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
