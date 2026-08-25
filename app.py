@@ -43,9 +43,9 @@ try:
     else:
         api_key = user_api_key   # from GUI
     
-    except Exception as e:
-        st.error(f"Error loading OpenAI credentials: {e}")
-        st.stop()
+except Exception as e:
+    st.error(f"Error loading OpenAI credentials: {e}")
+    st.stop()
 
 # Set environment variables for Langchain
 #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
