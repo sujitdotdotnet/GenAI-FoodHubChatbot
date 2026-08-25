@@ -60,35 +60,47 @@ with st.sidebar:
         st.session_state.api_base = user_api_base
 
 
-# --- LLM Initialisation using GUI inputs (or secrets) ---
+# --- LLM Initialisation: sidebar input takes precedence ---
 llm = None
 modelName = "gpt-5.4-mini"
 
-# Try secrets first (for deployment), else use GUI input
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-except (AttributeError, KeyError, FileNotFoundError):
-    api_key = user_api_key
+# 1. If the user entered a non‑empty key in the sidebar → use it
+if user_api_key and user_api_key.strip():
+    api_key = user_api_key.strip()
+    st.sidebar.info("🔑 Using API key from sidebar input.")
+else:
+    # 2. Otherwise, try to load from secrets
+    try:
+        api_key = st.secrets["OPENAI_API_KEY"]
+        st.sidebar.info("🔑 Using API key from secrets.")
+    except (AttributeError, KeyError, FileNotFoundError):
+        api_key = None
+        st.sidebar.warning("No API key found. Please enter one in the sidebar.")
 
 if not api_key:
     st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
     st.stop()
 
-# Strip whitespace (common copy-paste issue)
-api_key = api_key.strip()
+# Strip base URL as well
+api_base = user_api_base.strip() if user_api_base else None
 
+# Test the key immediately with a minimal call
 try:
     llm = ChatOpenAI(
         model_name=modelName,
         temperature=0.0,
-        openai_api_key="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",
-        openai_api_base=user_api_base.strip() if user_api_base else None
+        openai_api_key=api_key,
+        openai_api_base=api_base
     )
-    # --- Test the key immediately ---
-    llm.predict("Say hello")
+    # Quick validation call
+    llm.predict("Hello")
     st.sidebar.success("✅ LLM initialised and authenticated successfully.")
 except Exception as e:
     st.sidebar.error(f"❌ LLM authentication error: {e}\nPlease verify your API key and base URL.")
+    # Optionally show a masked version of the key to help debug
+    if api_key:
+        masked = api_key[:4] + "..." + api_key[-4:] if len(api_key) > 8 else "****"
+        st.sidebar.write(f"Key (masked): {masked}")
     st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
