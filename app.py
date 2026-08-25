@@ -62,7 +62,7 @@ with st.sidebar:
 
 # --- LLM Initialisation: sidebar input takes precedence ---
 llm = None
-modelName = "gpt-5.4-mini"
+modelName = "gpt-4o-mini"
 
 # 1. If the user entered a non‑empty key in the sidebar → use it
 if user_api_key and user_api_key.strip():
