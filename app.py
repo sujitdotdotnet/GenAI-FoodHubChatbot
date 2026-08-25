@@ -81,8 +81,8 @@ try:
     llm = ChatOpenAI(
         model_name=modelName,
         temperature=0.0,
-        openai_api_key=api_key,
-        openai_api_base=user_api_base.strip() if user_api_base else None
+        openai_api_key=st.session_state.api_key,
+        openai_api_base=st.session_state.api_base if st.session_state.api_base else None
     )
     # --- Test the key immediately ---
     llm.predict("Say hello")
