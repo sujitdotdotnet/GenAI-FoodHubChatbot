@@ -60,8 +60,8 @@ with st.sidebar:
 #user_api_base = st.text_input("OpenAI Base URL", value=st.session_state.api_base)
 
     if not api_key:
-    st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
-    st.stop()
+        st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
+        st.stop()
     
     
     # Update session state when changed
