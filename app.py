@@ -32,20 +32,11 @@ with st.sidebar:
 
 # --- Configuration and Initialization ---
 # Load API keys from config.json (or use st.secrets for deployed app)
+# Try to get from st.secrets (for deployment), otherwise use GUI input
 try:
-# Load OpenAI API key and base URL from secrets
-
-    #OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-    #OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE")
-    # Try secrets first (for deployment), then fallback to GUI input
-    if "OPENAI_API_KEY" in st.secrets:
-        api_key = st.secrets["OPENAI_API_KEY"]
-    else:
-        api_key = user_api_key   # from GUI
-    
-except Exception as e:
-    st.error(f"Error loading OpenAI credentials: {e}")
-    st.stop()
+    api_key = st.secrets["OPENAI_API_KEY"]
+except (AttributeError, KeyError, FileNotFoundError):
+    api_key = user_api_key   # from GUI
 
 # Set environment variables for Langchain
 #os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
@@ -69,29 +60,31 @@ if user_api_base != st.session_state.api_base:
     st.session_state.api_base = user_api_base
 
 
-
-
-# --- LLM Initialisation using GUI inputs ---
+# --- LLM Initialisation using GUI inputs (or secrets) ---
 llm = None
 modelName = "gpt-4o-mini"
 
-if not user_api_key:
-    st.warning("Please enter your OpenAI API key in the sidebar to continue.")
+# Try secrets first (for deployment), else use GUI input
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except (AttributeError, KeyError, FileNotFoundError):
+    api_key = user_api_key
+
+if not api_key:
+    st.warning("Please enter your OpenAI API key in the sidebar (or set it in secrets).")
     st.stop()
-else:
-    # Set environment variables or directly pass to ChatOpenAI
-    try:
-        # Option 1: pass directly to the constructor
-        llm = ChatOpenAI(
-            model_name=modelName,
-            temperature=0.0,
-            openai_api_key=user_api_key,
-            openai_api_base=user_api_base if user_api_base else None
-        )
-        st.success("LLM initialised successfully.")
-    except Exception as e:
-        st.error(f"LLM initialisation error: {e}")
-        st.stop()
+
+try:
+    llm = ChatOpenAI(
+        model_name=modelName,
+        temperature=0.0,
+        openai_api_key=api_key,
+        openai_api_base=user_api_base if user_api_base else None
+    )
+    st.sidebar.success("LLM initialised successfully.")
+except Exception as e:
+    st.sidebar.error(f"LLM initialisation error: {e}")
+    st.stop()
 
 # Load SQL Database (assuming it's in the same directory as app.py)
 DB_PATH = "customer_orders.db"
