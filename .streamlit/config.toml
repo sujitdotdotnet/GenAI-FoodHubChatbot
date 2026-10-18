@@ -1,0 +1,10 @@
+[theme]
+# Dark theme by default; users can switch to Light with the selector at the top right of the page
+base = "dark"
+primaryColor = "#FF7A1A"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
